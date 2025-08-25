@@ -7,8 +7,10 @@ cmds = [
 # ===== Build Phase =====
 [phases.build]
 cmds = [
+  "chmod +x backend/mvnw || true",
   "cd backend && ./mvnw clean package -DskipTests"
 ]
+
 
 # ===== Start Command =====
 [start]
