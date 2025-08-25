@@ -8,9 +8,10 @@ cmds = [
 [phases.build]
 cmds = [
   "chmod +x backend/mvnw || true",
+  # Set JAVA_HOME explicitly before building
+  "export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))",
   "cd backend && ./mvnw clean package -DskipTests"
 ]
-
 
 # ===== Start Command =====
 [start]
@@ -19,6 +20,9 @@ cmd = "java -jar backend/target/urngh-0.0.1-SNAPSHOT.jar"
 # ===== Environment =====
 [variables]
 JAVA_VERSION = "17"
+
+[env]
+JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
 
 # ===== Required Files =====
 [files]
