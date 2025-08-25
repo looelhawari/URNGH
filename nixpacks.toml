@@ -16,7 +16,6 @@ JAVA_VERSION = "17"
 
 [env]
 # Set your environment variables here or in Render dashboard
-git push origin clean-history --force
 # spring.datasource.password = "YOUR_DB_PASSWORD"
 
 # ===== Required Files =====
