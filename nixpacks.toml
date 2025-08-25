@@ -1,43 +1,40 @@
-# ===== Setup Phase =====
+# === Environment ===
+[variables]
+JAVA_VERSION = "17"
+
+# === Setup Phase ===
 [phases.setup]
 cmds = [
   "echo 'Setup phase'"
 ]
 
-# ===== Build Phase =====
+# === Build Phase ===
 [phases.build]
 cmds = [
   "chmod +x backend/mvnw || true",
-  # Set JAVA_HOME explicitly before building
-  "export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))",
   "cd backend && ./mvnw clean package -DskipTests"
 ]
 
-# ===== Start Command =====
+# === Start Phase ===
 [start]
 cmd = "java -jar backend/target/urngh-0.0.1-SNAPSHOT.jar"
 
-# ===== Environment =====
-[variables]
-JAVA_VERSION = "17"
-
-[env]
-JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
-
-# ===== Required Files =====
+# === Required Files ===
 [files]
 required = [
   "backend/pom.xml",
   "backend/mvnw",
   "backend/src/main/resources/application.properties",
-  "frontend/public/index.html"
+  "frontend/index.html",
+  "frontend/*.css",
+  "frontend/*.js"
 ]
 
-# ===== HTTP Port =====
+# === HTTP Port ===
 [ports]
 http = 8080
 
-# ===== Serve Frontend Static Files =====
+# === Serve Frontend Static Files ===
 [[static]]
-source = "frontend/public"
+source = "frontend"
 serve = "/"
