@@ -10,7 +10,7 @@ cmds = [
 
 [phases.start]
 cmds = [
-  "cd backend && java -jar target/urngh-0.0.1-SNAPSHOT.jar"
+  "java -jar backend/target/urngh-0.0.1-SNAPSHOT.jar"
 ]
 
 [variables]
