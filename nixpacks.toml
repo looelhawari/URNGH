@@ -1,0 +1,38 @@
+# nixpacks.toml
+
+[phases.setup]
+command = "echo 'Setup phase'"
+
+[phases.build]
+cmds = [
+  "cd backend && ./mvnw clean package -DskipTests"
+]
+
+[phases.start]
+cmds = [
+  "cd backend && java -jar target/urngh-0.0.1-SNAPSHOT.jar"
+]
+
+[variables]
+JAVA_VERSION = "17"
+
+[env]
+# Set your environment variables here or in Render dashboard
+# groq_api_key = "YOUR_GROQ_API_KEY"
+# spring.datasource.password = "YOUR_DB_PASSWORD"
+
+[files]
+required = [
+  "backend/pom.xml",
+  "backend/mvnw",
+  "backend/src/main/resources/application.properties",
+  "frontend/public/index.html"
+]
+
+[ports]
+http = 8080
+
+[[static]]
+# Serve frontend static files
+source = "frontend/public"
+serve = "/"
