@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reports</title>
+    <link rel="stylesheet" href="style2.css" />
+</head>
+<body>
+    <header>
+        <h1>Your Reports</h1>
+    </header>
+    <main>
+        <div id="report-actions">
+            <button id="generate-detailed-report">Download Detailed Health Metrics Report</button>
+        </div>
+        <div id="reports-container">
+            <table id="reports-table" border="1">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Blood Pressure</th>
+                        <th>Blood Sugar</th>
+                        <th>Heart Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Report rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script src="config.js"></script>
+    <script>
+        const userData = JSON.parse(localStorage.getItem("user"));
+        const reportsTableBody = document.getElementById("reports-table").querySelector("tbody");
+
+        if (userData && userData.role === "PATIENT") {
+            fetch(`${backendUrl}/api/metrics/${userData.id}`)
+                .then((response) => {
+                    if (!response.ok) throw new Error("Failed to fetch reports.");
+                    return response.json();
+                })
+                .then((reports) => {
+                    // Clear any existing rows
+                    reportsTableBody.innerHTML = "";
+
+                    if (reports.length === 0) {
+                        reportsTableBody.innerHTML =
+                            "<tr><td colspan='4'>No reports available.</td></tr>";
+                    } else {
+                        // Populate table with fetched reports
+                        reports.forEach((report) => {
+                            const row = `
+                                <tr>
+                                    <td>${new Date(report.recordedAt).toLocaleString()}</td>
+                                    <td>${report.bloodPressure}</td>
+                                    <td>${report.bloodSugar}</td>
+                                    <td>${report.heartRate}</td>
+                                </tr>
+                            `;
+                            reportsTableBody.innerHTML += row;
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching reports:", error);
+                    reportsTableBody.innerHTML =
+                        "<tr><td colspan='4'>Unable to load reports. Please try again later.</td></tr>";
+                });
+
+            document.getElementById("generate-detailed-report").addEventListener("click", () => {
+                generateDetailedReport();
+            });
+        } else {
+            reportsTableBody.innerHTML =
+                "<tr><td colspan='4'>Unauthorized access. Please log in as a patient.</td></tr>";
+        }
+
+        function generateDetailedReport() {
+            fetch(`${backendUrl}/api/reports/patient/${userData.id}/detailed-csv`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) throw new Error("Failed to download report.");
+                    return response.blob();
+                })
+                .then((blob) => {
+                    const url = window.URL.createObjectURL(new Blob([blob]));
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute("download", "detailed_health_metrics_report.csv");
+                    document.body.appendChild(link);
+                    link.click();
+                    link.parentNode.removeChild(link);
+                })
+                .catch((error) => {
+                    console.error("Error downloading report:", error);
+                    alert(`Failed to download report. Please try again later.`);
+                });
+        }
+    </script>
+</body>
+</html>

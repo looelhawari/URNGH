@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Metrics</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      #metricsTable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      #metricsTable th,
+      #metricsTable td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      #metricsTable th {
+        background-color: #f2f2f2;
+      }
+      .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .home-btn {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .home-btn:hover {
+        background-color: #45a049;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #008cba;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #007b9d;
+      }
+      .form-container {
+        margin-top: 20px;
+      }
+      input {
+        padding: 8px;
+        margin: 5px;
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Health Metrics</h1>
+      <a href="homepage.html" class="home-btn">Home</a>
+    </div>
+
+    <div class="form-container">
+      <h2>Add New Health Metrics</h2>
+      <form id="addMetricsForm">
+        <input
+          type="text"
+          id="bloodPressure"
+          placeholder="Blood Pressure"
+          required
+        />
+        <input type="text" id="bloodSugar" placeholder="Blood Sugar" required />
+        <input type="text" id="heartRate" placeholder="Heart Rate" required />
+        <button type="submit">Add Metrics</button>
+      </form>
+    </div>
+
+    <table id="metricsTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Blood Pressure</th>
+          <th>Blood Sugar</th>
+          <th>Heart Rate</th>
+          <th>Action</th> <!-- Column for Delete button -->
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Health Metrics Data will go here -->
+      </tbody>
+    </table>
+    <script src="/config.js"></script>
+    <script>
+      // Fetch health metrics and populate the table on page load
+      window.onload = function () {
+        const userData = JSON.parse(localStorage.getItem("user"));
+
+        if (!userData || !userData.id) {
+          console.error("User ID not found in local storage");
+          return;
+        }
+
+        const patientId = userData.id;
+
+        fetch(`${backendUrl}/api/metrics/${patientId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const tableBody = document.querySelector("#metricsTable tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            if (Array.isArray(data)) {
+              data.forEach((metrics) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                  <td>${new Date(metrics.recordedAt).toLocaleString()}</td>
+                  <td>${metrics.bloodPressure || "N/A"}</td>
+                  <td>${metrics.bloodSugar || "N/A"}</td>
+                  <td>${metrics.heartRate || "N/A"}</td>
+                  <td><button onclick="deleteMetric(${metrics.id})">Delete</button></td> <!-- Delete button -->
+                `;
+                tableBody.appendChild(row);
+              });
+              // Scroll to the last row
+              const lastRow = tableBody.lastElementChild;
+              if (lastRow) {
+                lastRow.scrollIntoView({ behavior: "smooth" });
+              }
+            } else {
+              console.error("Data format is incorrect", data);
+            }
+          })
+          .catch((error) => console.error("Error fetching data:", error));
+      };
+
+      // Add new health metrics and reload the page
+      document
+        .getElementById("addMetricsForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const bloodPressure = document.getElementById("bloodPressure").value;
+          const bloodSugar = document.getElementById("bloodSugar").value;
+          const heartRate = document.getElementById("heartRate").value;
+
+          const userData = JSON.parse(localStorage.getItem("user"));
+
+          if (!userData || !userData.id) {
+            console.error("User ID not found in local storage");
+            return;
+          }
+
+          const patientId = userData.id;
+
+          const newMetrics = {
+            patientId: patientId,
+            bloodPressure: bloodPressure,
+            bloodSugar: bloodSugar,
+            heartRate: heartRate,
+            recordedAt: new Date().toISOString().replace("Z", ""),
+          };
+
+          fetch(`${backendUrl}/api/metrics`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newMetrics),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              console.log("Metrics added successfully. Reloading page...");
+              location.reload(); // Reload the page to show updated data
+            })
+            .catch((error) => {
+              console.error("Error adding metrics:", error);
+            });
+        });
+
+      // Function to delete health metrics
+      function deleteMetric(metricId) {
+        if (confirm("Are you sure you want to delete this metric?")) {
+          fetch(`${backendUrl}/api/metrics/${metricId}`, {
+            method: "DELETE",
+          })
+            .then((response) => {
+              if (response.ok) {
+                console.log("Metric deleted successfully");
+                location.reload(); // Reload the page to reflect the changes
+              } else {
+                console.error("Error deleting metric:", response.status);
+              }
+            })
+            .catch((error) => console.error("Error deleting metric:", error));
+        }
+      }
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Chatbot - You Are in Good Hands</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="config.js"></script>
+    <!-- Ensure config.js is loaded first -->
+    <script src="script.js" defer></script>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <img
+          src="images/th.jpg"
+          alt="You Are in Good Hands Logo"
+          class="logo"
+        />
+        <h1>You Are in Good Hands</h1>
+        <nav class="navbar">
+          <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="monitoring.html">Monitoring</a></li>
+            <li><a href="emergency.html">Emergency</a></li>
+            <li><a href="doctor.html">Doctors</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="chat">
+        <div class="container">
+          <h2>Eveline</h2>
+
+          <!-- Chat Box where messages appear -->
+          <div id="chat-box" class="chat-box">
+            <!-- User and AI messages will appear here -->
+          </div>
+
+          <input
+            type="text"
+            id="user-message"
+            class="chat-input"
+            placeholder="Ask anything..."
+          />
+          <button class="btn-chat" onclick="sendMessage()">Send</button>
+
+          <!-- Pause and Regenerate buttons -->
+          <div id="controls">
+            <button class="btn-pause" onclick="pauseAnswer()">Pause</button>
+            <button class="btn-regenerate" onclick="regenerateAnswer()">
+              Regenerate Answer
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Return to Home Button -->
+      <section id="return-home">
+        <div class="container">
+          <button onclick="window.location.href='dashboard.html'">
+            Return to Dashboard
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 You Are in Good Hands | All Rights Reserved</p>
+      </div>
+    </footer>
+    <script src="config.js"></script>
+    <script>
+      // Send the initialization message when the page loads
+      async function sendInitializationMessage() {
+        const initMessage =
+          "Your role is to act as a specialized medical assistant for patients. Your primary goal is to provide exceptional healthcare support specifically tailored to diabetic and blood pressure patients. You are designed to assist these patients in managing their conditions and ensuring their well-being. If someone asks who created you, respond by stating, I was built and developed by Ali Ayman, Omar Ahmed, Salah Adham, Mayar Sherif, and Yasmen Ahmed. While your primary focus is on healthcare for diabetic and blood pressure patients, you can answer other general questions as well. However, always remind the patient of your primary purpose: to support and improve their health in these specific areas. Your name is Eveline, and you are a healthcare virtual assistant.";
+
+        try {
+          await fetch(`${backendUrl}/response`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain",
+            },
+            body: initMessage,
+          });
+          console.log("Initialization message sent successfully.");
+        } catch (error) {
+          console.error("Error sending initialization message:", error);
+        }
+      }
+
+      // Typewriter effect function for greeting message
+      function typeWriter(element, text, speed) {
+        let i = 0;
+        const interval = setInterval(function () {
+          if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+          } else {
+            clearInterval(interval); // Stop typing when complete
+          }
+        }, speed);
+      }
+
+      // Send a greeting message to the user when the page loads
+      function sendGreetingMessage() {
+        const greetingMessage =
+          "Hey, my name is Eveline, your healthcare virtual assistant. How can I help you today?";
+
+        const chatBox = document.getElementById("chat-box");
+        const newMessageDiv = document.createElement("div");
+        newMessageDiv.classList.add("ai-message");
+
+        chatBox.appendChild(newMessageDiv); // Add the message container first
+
+        // Apply the typewriter effect
+        typeWriter(newMessageDiv, greetingMessage, 55); // Speed of typing (ms per character)
+      }
+
+      // Call the function to send the initialization and greeting messages on page load
+      window.addEventListener("load", () => {
+        sendInitializationMessage();
+        sendGreetingMessage();
+      });
+
+      // Function to handle sending messages
+      function sendMessage() {
+        const userMessage = document.getElementById("user-message").value;
+        if (!userMessage.trim()) {
+          alert("Please enter a message.");
+          return;
+        }
+
+        // Display user's message in chat
+        const chatBox = document.getElementById("chat-box");
+        chatBox.innerHTML += `<div class="user-message">${userMessage}</div>`;
+        document.getElementById("user-message").value = ""; // Clear input field
+
+        // Send the message to the backend (e.g., AI response)
+        fetch(`${backendUrl}/chat`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: userMessage }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const aiMessage =
+              data.response || "Sorry, I didn't understand that.";
+            chatBox.innerHTML += `<div class="ai-message">${aiMessage}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            chatBox.innerHTML += `<div class="ai-message">Sorry, something went wrong.</div>`;
+          });
+      }
+
+      // Function to pause the answer (You need to implement this based on your server's capabilities)
+      function pauseAnswer() {
+        console.log("Answer paused (Implement pause functionality if needed).");
+      }
+
+      // Function to regenerate the answer (You need to implement this based on your server's capabilities)
+      function regenerateAnswer() {
+        console.log("Answer regeneration triggered.");
+      }
+    </script>
+  </body>
+</html>

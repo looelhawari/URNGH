@@ -1,0 +1,148 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Body Styling */
+body {
+    background-color: #f4f4f9;
+    color: #333;
+    font-size: 16px;
+}
+
+/* Header Styling */
+.header {
+    background-color: #4CAF50; /* Green */
+    padding: 10px 0;
+    text-align: center;
+}
+
+.header .logo {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.header h1 {
+    display: inline-block;
+    font-size: 24px;
+    color: white;
+    margin-left: 10px;
+}
+
+.navbar {
+    margin-top: 10px;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.navbar ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    color: #f1f1f1;
+}
+
+/* Main Section Styling */
+main {
+    padding: 30px;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Chat Section */
+#chat {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#chat-box {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.chat-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+}
+
+.btn-chat {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-chat:hover {
+    background-color: #45a049;
+}
+
+/* Return Home Button Styling */
+#return-home {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#return-home button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#return-home button:hover {
+    background-color: #45a049;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    margin: 0;
+}

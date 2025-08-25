@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctor Sign Up - You Are in Good Hands</title>
+    <link rel="stylesheet" href="signup.css" />
+  </head>
+
+  <body>
+    <div class="signup-container">
+      <h1>Doctor Sign Up</h1>
+      <form id="doctor-signup-form" onsubmit="handleDoctorSignup(event)">
+        <label for="full-name">Full Name:</label>
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          required
+          placeholder="Enter your full name"
+        />
+
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          required
+          placeholder="Enter your username"
+        />
+
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="Enter your email"
+        />
+
+        <label for="contact-number">Contact Number:</label>
+        <input
+          type="tel"
+          id="contact-number"
+          name="contact-number"
+          required
+          placeholder="Enter your contact number"
+        />
+
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          placeholder="Enter your password"
+        />
+
+        <label for="confirm-password">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirm-password"
+          required
+          placeholder="Confirm your password"
+        />
+
+        <button type="submit">Sign Up as Doctor</button>
+      </form>
+    </div>
+    <script src="config.js"></script>
+    <script>
+      function handleDoctorSignup(event) {
+        event.preventDefault(); // Prevent form submission
+
+        const fullName = document.getElementById("full-name").value;
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const contactNumber = document.getElementById("contact-number").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirm-password").value;
+
+        // Basic validation
+        if (
+          fullName.trim() === "" ||
+          username.trim() === "" ||
+          email.trim() === "" ||
+          contactNumber.trim() === "" ||
+          password.trim() === ""
+        ) {
+          alert("Please fill in all fields");
+          return;
+        }
+        if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return;
+        }
+
+        // Create user object
+        const user = {
+          fullName,
+          username,
+          email,
+          contactNumber,
+          password,
+          role: "DOCTOR",
+        };
+
+        // Send data to backend
+        fetch(`${backendUrl}/api/users/registerDoctor`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            window.location.href = "dashboard.html"; // Redirect to login page for doctors
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert(`Registration failed: ${error.message}`);
+          });
+      }
+    </script>
+  </body>
+</html>

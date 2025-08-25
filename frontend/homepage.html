@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>You Are in Good Hands - Healthcare System</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- Welcome Section -->
+    <div id="welcome-section">
+      <h1>Welcome to GoodHands</h1>
+      <p>
+        We are dedicated to providing the best healthcare solutions, monitoring
+        blood pressure and sugar levels, and connecting you with the right
+        medical resources in case of emergencies.
+      </p>
+      <p>
+        Our AI-powered chatbot is here to assist you with any medical queries,
+        monitor your health data, and provide personalized support.
+      </p>
+      <button onclick="showRoleSelection()">Proceed</button>
+    </div>
+
+    <!-- Header with logo, navigation menu, and login icon -->
+    <header class="header">
+      <div class="container">
+        <img
+          src="images/th.jpg"
+          alt="You Are in Good Hands Logo"
+          class="logo"
+        />
+        <h1>You Are in Good Hands</h1>
+        <nav class="navbar">
+          <ul>
+            <li>
+              <a href="chatbot.html" onclick="accessChatbot(event)"
+                >Contact Eveline</a
+              >
+            </li>
+            <!-- Virtual Assistant link visible -->
+            <li><a href="#emergency"  onclick="accessEmergency(event)">Emergency</a></li>
+            <li><a href="#doctor" onclick="accessDoctors(event)">Doctors</a></li>
+
+            <li>
+              <li><a href="dashboard.html" onclick="accessDashboard(event)">Dashboard</a></li>
+</li>
+            <!-- Add Login Icon -->
+            <li class="login-icon">
+              <a href="dashboard.html" title="Login">
+                <i class="fa fa-user-circle" style="font-size: 24px"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Home Section -->
+      <section id="home" class="section-home">
+        <div class="container">
+          <h2>Welcome to Your Healthcare Monitoring System</h2>
+          <p>
+            Track your health metrics, connect with doctors, and receive
+            AI-driven assistance to stay healthy.
+          </p>
+        </div>
+      </section>
+
+      <!-- Removed Health Monitoring Section -->
+      <!-- <section id="monitoring" class="section-monitoring">
+            <div class="container">
+                <h2>Health Monitoring</h2>
+                <form id="monitor-form" class="monitor-form">
+                    <label for="blood-pressure">Blood Pressure (mmHg):</label>
+                    <input type="number" id="blood-pressure" name="blood-pressure" placeholder="Enter your blood pressure" required>
+
+                    <label for="blood-sugar">Blood Sugar (mg/dL):</label>
+                    <input type="number" id="blood-sugar" name="blood-sugar" placeholder="Enter your blood sugar level" required>
+
+                    <button type="submit" class="btn">Submit</button>
+                </form>
+            </div>
+        </section> -->
+
+      <!-- Role Selection Screen -->
+      <section
+        id="role-selection"
+        class="section-role-selection"
+        style="display: none"
+      >
+        <h2>Select Your Role</h2>
+        <button onclick="selectRole('patient')">Patient</button>
+        <button onclick="selectRole('doctor')">Doctor</button>
+
+        <!-- Already have an account link -->
+        <p class="already-have-account">
+          Already have an account? <a href="login.html">Login here</a>
+        </p>
+      </section>
+
+      <!-- Doctor Communication Section -->
+      <section id="doctor" class="section-doctor">
+        <div class="container">
+          <h2>Contact Your Doctor</h2>
+          <button class="btn-send-doctor" onclick="sendToDoctor()">
+            Send Health Data to Doctor
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          &copy; 2024 You Are in Good Hands | All Rights Reserved <br />
+          Created By Ali Ayman`s team
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Check if user is logged in and restrict functionality accordingly
+      function checkLoginStatus() {
+        const userData = JSON.parse(localStorage.getItem("user"));
+
+        // If user is not logged in, disable certain features (like submitting health data)
+        if (!userData) {
+          const restrictedElements = document.querySelectorAll(".restricted");
+          restrictedElements.forEach(function (element) {
+            element.disabled = true; // Disable form buttons and inputs
+            element.classList.add("disabled");
+          });
+        }
+      }
+
+      // Function to show the role selection screen
+      function showRoleSelection() {
+        document.getElementById("welcome-section").style.display = "none"; // Hide welcome section
+        const roleSelection = document.getElementById("role-selection");
+        roleSelection.style.display = "block"; // Show role selection section
+        roleSelection.scrollIntoView({ behavior: "smooth" }); // Smooth scroll to role selection section
+      }
+
+      // Function to handle the user's role selection
+      function selectRole(role) {
+        if (role === "patient") {
+          window.location.href = "/signup.html";
+        } else if (role === "doctor") {
+          window.location.href = "/Doctor-sign-up.html";
+        }
+
+        // Open the AI chat bot in a new tab
+        window.open("chatbot.html", "_blank");
+      }
+
+      // Function to send health data to the doctor (generating and sending a report)
+      function sendToDoctor() {
+        const userData = JSON.parse(localStorage.getItem("user"));
+        if (!userData) {
+          window.location.href = "/signup.html";
+          return;
+        }
+
+        // Assume patient health data is stored in userData (you can modify this as per your data structure)
+        const bloodPressure = userData.bloodPressure || "N/A";
+        const bloodSugar = userData.bloodSugar || "N/A";
+
+        // Create a report
+        const report = `
+                Health Report for: ${userData.name}
+                Blood Pressure: ${bloodPressure} mmHg
+                Blood Sugar: ${bloodSugar} mg/dL
+                Date: ${new Date().toLocaleDateString()}
+            `;
+
+        // Simulate sending report to doctor (e.g., via email or system)
+        console.log("Sending Report to Doctor:\n" + report);
+        alert("Your health report has been sent to your doctor.");
+
+        // Clear the form or take other actions as needed
+        // Example: Clear the stored health data
+        localStorage.removeItem("user");
+      }
+
+      //  Function to check login status before accessing chatbot
+      function accessChatbot(event) {
+        const userData = JSON.parse(localStorage.getItem("user"));
+        if (!userData) {
+          window.location.href = "/login.html";
+          event.preventDefault(); // Prevent navigation to the chatbot page
+        }
+      }
+      // Function to check login status before accessing dashboard
+    function accessDashboard(event) {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  if (!userData) {
+    window.location.href = "/login.html";
+    event.preventDefault(); // Prevent navigation to the dashboard page
+  }
+}
+function accessDoctors(event) {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  if (!userData) {
+    window.location.href = "/login.html";
+    event.preventDefault(); // Prevent navigation to the dashboard page
+  }
+}
+function accessEmergency(event) {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  if (!userData) {
+    window.location.href = "/login.html";
+    event.preventDefault(); // Prevent navigation to the dashboard page
+  }
+}
+
+      // Call the checkLoginStatus function when the page loads
+      window.onload = checkLoginStatus;
+    </script>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyBjr8iibcNLTSowQCyfY8UL7LGyHO4GyvA",
+        authDomain: "urngh-fbb57.firebaseapp.com",
+        projectId: "urngh-fbb57",
+        storageBucket: "urngh-fbb57.firebasestorage.app",
+        messagingSenderId: "45683376184",
+        appId: "1:45683376184:web:2272bebcf464947ad2e6cd",
+        measurementId: "G-WWL0B957XM"
+      };
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
+  </body>
+</html>

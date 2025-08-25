@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Sign Up - You Are in Good Hands</title>
+    <link rel="stylesheet" href="signup.css" />
+  </head>
+
+  <body>
+    <div class="signup-container">
+      <h1>Patient Sign Up</h1>
+      <form id="patient-signup-form" onsubmit="handleSubmit(event)">
+        <!-- Account Information -->
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          required
+          placeholder="Enter your username"
+        />
+
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="Enter your email"
+        />
+
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          placeholder="Enter your password"
+        />
+
+        <label for="confirm-password">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirm-password"
+          required
+          placeholder="Confirm your password"
+        />
+
+        <!-- Patient-Specific Information -->
+        <label for="full-name">Full Name:</label>
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          required
+          placeholder="Enter your full name"
+        />
+
+        <label for="date-of-birth">Date of Birth:</label>
+        <input type="date" id="date-of-birth" name="date-of-birth" required />
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="contact-number">Contact Number:</label>
+        <input
+          type="tel"
+          id="contact-number"
+          name="contact-number"
+          required
+          placeholder="Enter your contact number"
+        />
+
+        <label for="emergency-contat">Doctor Email:</label>
+        <input
+          type="tel"
+          id="emergency-contact"
+          name="emergency-contact"
+          required
+          placeholder="Enter Doctor`s email"
+        />
+        <label for="doctor-contact-number">Doctor Contact Number:</label>
+        <input
+          type="tel"
+          id="doctor-contact-number"
+          name="doctor-contact-number"
+          required
+          placeholder="Enter doctor's contact number"
+        />
+        <label for="address">Address:</label>
+        <textarea
+          id="address"
+          name="address"
+          required
+          placeholder="Enter your full address"
+        ></textarea>
+        <label for="blood-type">Blood Type:</label>
+        <select id="blood-type" name="blood-type" required>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+        </select>
+
+        <label for="medical-history">Medical History:</label>
+        <textarea
+          id="medical-history"
+          name="medical-history"
+          placeholder="Enter your medical history (optional)"
+        ></textarea>
+
+        <label for="current-medication">Current Medication:</label>
+        <textarea
+          id="current-medication"
+          name="current-medication"
+          placeholder="List any medications you are currently taking"
+        ></textarea>
+
+        <label for="allergies">Allergies:</label>
+        <textarea
+          id="allergies"
+          name="allergies"
+          placeholder="List any allergies"
+        ></textarea>
+
+        <button type="submit">Complete Registration</button>
+      </form>
+    </div>
+    <script src="/config.js"></script>
+    <!-- Ensure this is first -->
+    <script src="/signup.js"></script>
+  </body>
+</html>

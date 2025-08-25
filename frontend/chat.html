@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat - GoodHealth</title>
+    <link rel="stylesheet" href="chat.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Global Styling */
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: #f4f7fc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .chat-container {
+        width: 100%;
+        max-width: 800px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        max-height: 600px;
+      }
+
+      .chat-header {
+        background-color: #2f3d52;
+        color: white;
+        padding: 15px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .chat-messages {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        max-height: 400px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .message {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        background-color: #f1f1f1;
+        max-width: 70%;
+      }
+
+      .message.user {
+        background-color: #c3e0ff;
+        margin-left: auto;
+      }
+
+      .message.bot {
+        background-color: #d6e8d7;
+      }
+
+      .chat-footer {
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border-top: 1px solid #eee;
+      }
+
+      .chat-footer input {
+        flex: 1;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .chat-footer button {
+        margin-left: 10px;
+        padding: 10px 15px;
+        background-color: #2f3d52;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .chat-footer button:hover {
+        background-color: #3a4e70;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .chat-container {
+          width: 90%;
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        Chat with Virtual Assistant
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <!-- Chat messages will appear here -->
+      </div>
+      <div class="chat-footer">
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Type a message..."
+          autocomplete="off"
+        />
+        <button id="sendMessageButton">Send</button>
+      </div>
+    </div>
+    <script src="config.js"></script>
+
+    <script src="chat.js"></script>
+  </body>
+</html>
