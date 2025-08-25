@@ -1,17 +1,25 @@
+# ===== Setup Phase =====
 [phases.setup]
 command = "echo 'Setup phase'"
 
+# ===== Build Phase =====
 [phases.build]
-cmds = [
-  "cd backend && ./mvnw clean package -DskipTests"
-]
+command = "cd backend && ./mvnw clean package -DskipTests"
 
-[start]
+# ===== Start Command =====
+[phases.start]
 command = "java -jar backend/target/urngh-0.0.1-SNAPSHOT.jar"
 
+# ===== Environment =====
 [variables]
 JAVA_VERSION = "17"
 
+[env]
+# Set your environment variables here or in Render dashboard
+git push origin clean-history --force
+# spring.datasource.password = "YOUR_DB_PASSWORD"
+
+# ===== Required Files =====
 [files]
 required = [
   "backend/pom.xml",
@@ -20,9 +28,11 @@ required = [
   "frontend/public/index.html"
 ]
 
+# ===== HTTP Port =====
 [ports]
 http = 8080
 
+# ===== Serve Frontend Static Files =====
 [[static]]
 source = "frontend/public"
 serve = "/"
